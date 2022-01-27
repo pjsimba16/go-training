@@ -1,0 +1,45 @@
+### Test 1
+
+GET http://localhost:8080/contacts
+
+### Test 2
+
+POST http://localhost:8080/contacts
+
+{"Last":"Simba", "First":"Patrick", "Company":"DSPTI", "Address":"Signa","Country":"PH","Position":"Data Analyst"}
+
+### Test 3
+
+GET http://localhost:8080/contacts
+
+### Test 4
+
+GET http://localhost:8080/contacts/1
+
+### Test 5
+
+DELETE http://localhost:8080/contacts/1
+
+### Test 6
+
+POST http://localhost:8080/contacts
+
+{"Last":"Baggins", "First":"Frodo", "Company":"Hobbits", "Address":"The Shire","Country":"Middle Earth","Position":"Ring Bearer"}
+###
+POST http://localhost:8080/contacts
+
+{"Last":"Elessar", "First":"Aragorn", "Company":"Men", "Address":"Minas Tirith","Country":"Middle Earth","Position":"King"}
+###
+POST http://localhost:8080/contacts
+
+{"Last":"Greenleaf", "First":"Legolas", "Company":"Elves", "Address":"Mirkwood","Country":"Middle Earth","Position":"Elven Prince"}
+###
+POST http://localhost:8080/contacts
+
+{"Last":"Son of Gloin", "First":"Gimli", "Company":"Dwarves", "Address":"Erebor","Country":"Middle Earth","Position":"Traveller"}
+
+### Test 7
+
+PUT http://localhost:8080/contacts/0?id=7&first=sam
+
+//{"Last":"Gamgee", "First":"Sam", "Company":"Hobbits", "Address":"The Shire","Country":"Middle Earth","Position":"Gardener"}
