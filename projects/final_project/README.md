@@ -12,6 +12,16 @@ http://localhost:8080/books
 
 The webapp implements a REST API for a database of book records. All of the data is represented in json format.
 
+*REQUIREMENTS*
+
+1. http API
+2. http client (webapp or CLI)
+3. Storage - file-based (csv, json) or SQL database
+4. Logging capability, multiple users
+5. Deployed using Docker
+6. Full documentation (README.md, sufficiently commented source code)
+7. Video presentation (min 1 minute, max 3 minutes)
+
 | HTTP Verb | Entire collection /contacts  | Specific item /contacts/{id} |
 |-----------|------------|----------------|
 | POST      | 201 (Created), creates new book record; 409 (Conflict), retrieves current record | 405 (Not allowed) |
