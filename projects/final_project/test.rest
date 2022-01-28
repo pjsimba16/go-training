@@ -1,0 +1,46 @@
+### Test 1: Get empty database
+GET http://localhost:8080/books
+
+### Test 2: Sign up and log in
+http://localhost:8080/books/signup?username=patrick&password=project
+
+###
+http://localhost:8080/books/login?username=patrick&password=project
+
+
+### Test 3: Post book records
+POST http://localhost:8080/books
+
+{"Title":"The Lord of the Rings: Fellowship of the Ring", "Author":"JR Tolkien", "Type":"Novel", "Genre":"Fantasy, Adventure","Rating":"","Status":"Wish List","Notes":""}
+###
+POST http://localhost:8080/books
+
+{"Title":"The Knife of Never Letting Go", "Author":"Patrick Ness", "Type":"Novel", "Genre":"Young-Adult, Science Fiction","Rating":"10/10","Status":"Finished","Notes":"Brilliant!"}
+###
+POST http://localhost:8080/books
+
+{"Title":"The Mysterious Benedict Society", "Author":"Trenton Lee Stewart", "Type":"Novel", "Genre":"Young-Adult, Adventure","Rating":"10/10","Status":"Finished","Notes":"Easy read, smart writing"}
+###
+POST http://localhost:8080/books
+
+{"Title":"The Catcher in the Rye", "Author":"J.D. Salinger", "Type":"Novel", "Genre":"Fiction","Rating":"7/10","Status":"Finished","Notes":"Thought provoking, a bit slow"}
+###
+POST http://localhost:8080/books
+
+{"Title":"The Shadow of Kyoshi", "Author":"F.C. Yee", "Type":"Novel", "Genre":"Science Fiction, Adventure","Rating":"","Status":"Ongoing","Notes":"Great so far"}
+
+### Test 4: Delete a book entry
+DELETE http://localhost:8080/books/1
+
+### Test 5: Update a book entry
+PUT http://localhost:8080/books/2?notes=Loved it
+
+### Test 6: Delete a book entry
+http://localhost:8080/books/logout
+
+### Test 7: Sign up and login for another user
+
+http://localhost:8080/books/signup?username=user2&password=user2
+
+###
+http://localhost:8080/books/login?username=user2&password=user2
