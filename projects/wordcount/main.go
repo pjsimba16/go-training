@@ -1,3 +1,5 @@
+//Patrick Jaime Simba
+
 //package main contains functions to read multiple txt files and count the number of unique words in all the files together.
 package main
 
