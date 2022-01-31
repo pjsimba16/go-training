@@ -1,3 +1,5 @@
+//Patrick Jaime Simba
+
 //package main implements a REST API where you can create, retrieve, update and delete contact records from a JSON database.
 package main
 
