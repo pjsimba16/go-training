@@ -1,3 +1,5 @@
+//Patrick Jaime Simba
+
 //package main produces a webapp that can be used to solve a system of 3 equations using Cramer's rule
 package main
 
