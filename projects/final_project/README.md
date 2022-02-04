@@ -12,9 +12,9 @@ http://localhost:8080/books
 
 The webapp implements a REST API for a database of book records. All of the data is represented in json format.
 
-This webapp can be used to store book records for books that you've read, want to read or are currently reading. While the webapp is running, multiple users can sign up to create their own databases and log in or log out to access or or close their databases. The webapp contains features to create, retrieve, update or delete book entries in each users own databases. Additionally, the webapp has functions that allows users to recommend books from their own databases to other signed up users, which those users can add into their own databases. Similarly, users can create groups with other existing accounts in which they can share book entries within a single database.
+This webapp can be used to store book records for books that you've read, want to read or are currently reading. While the webapp is running, multiple users can sign up to create their own databases and log in or log out to access or or close their databases. The webapp contains features to create, retrieve, update or delete book entries in each users own databases. Moreover, you can view the current book records as a whole or with filters. Additionally, the webapp has functions that allows users to recommend books from their own databases to other signed up users, which those users can add into their own databases. Similarly, users can create groups with other existing accounts in which they can share book entries within a single database.
 
-Webapp can also be deployed and ran using Docker.
+Webapp also deployed and ran using Docker.
 
 *REQUIREMENTS*
 
@@ -59,6 +59,8 @@ Webapp can also be deployed and ran using Docker.
 | recommend | recommend a book entry to another existing user from your own database |
 | checkrecs | view the recommendations from other users |
 | addrecs | add all recommendations from other users into your database |
+| viewallbooks | view all books in current user's database |
+| filterby... | filter the books in current user's database by author, booktype, rating, status, or genre |
 
 # ERROR HANDLING
 
