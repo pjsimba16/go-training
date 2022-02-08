@@ -5,13 +5,13 @@ http://localhost:8080/books
 GET http://localhost:8080/books
 
 ### View all books
-http://localhost:8080/books/viewall
+http://localhost:8080/viewall
 
 ### Test 2: Sign up and log in
-http://localhost:8080/books/signup?username=patrick&password=project
+http://localhost:8080/signup?username=patrick&password=project
 
 ###
-http://localhost:8080/books/login?username=patrick&password=project
+http://localhost:8080/login?username=patrick&password=project
 
 
 ### Test 3: Post book records
@@ -41,10 +41,10 @@ POST http://localhost:8080/books
 
 
 ### Test 4: Filter book entries
-http://localhost:8080/books/filterbyrating?rating=10
+http://localhost:8080/filterbyrating?rating=10
 
 ### 
-http://localhost:8080/books/filterbybooktype?booktype=Novel
+http://localhost:8080/filterbybooktype?booktype=Novel
 
 
 ### Test 5: Delete a book entry
@@ -54,34 +54,34 @@ DELETE http://localhost:8080/books/1
 PUT http://localhost:8080/books/2?notes=Loved it
 
 ### Test 7: Log out of user
-http://localhost:8080/books/logout
+http://localhost:8080/logout
 
 ### Test 8: Sign up and login for another user
 
-http://localhost:8080/books/signup?username=user2&password=user2
+http://localhost:8080/signup?username=user2&password=user2
 
 ###
-http://localhost:8080/books/login?username=user2&password=user2
+http://localhost:8080/login?username=user2&password=user2
 
 
 ### Test 9: Create, add to, add members and access a new group
-http://localhost:8080/books/newgroup?groupname=bookclub
+http://localhost:8080/newgroup?groupname=bookclub
 
 ###
-http://localhost:8080/books/addtogroup?groupname=bookclub&title=The Lord of the Rings: Fellowship of the Ring
+http://localhost:8080/addtogroup?groupname=bookclub&title=The Lord of the Rings: Fellowship of the Ring
 
 ###
-http://localhost:8080/books/addtogroup?groupname=bookclub&title=The Shadow of Kyoshi
+http://localhost:8080/addtogroup?groupname=bookclub&title=The Shadow of Kyoshi
 
 ###
-http://localhost:8080/books/addgroupmember?groupname=bookclub&member=patrick
+http://localhost:8080/addgroupmember?groupname=bookclub&member=patrick
 
 ###
-http://localhost:8080/books/viewgroup?groupname=bookclub
+http://localhost:8080/viewgroup?groupname=bookclub
 
 
 ### Test 10: Recommend a book to another user and save recommendations into personal database
-http://localhost:8080/books/recommend?username=patrick&bookname=The Shadow of Kyoshi
+http://localhost:8080/recommend?username=patrick&bookname=The Shadow of Kyoshi
 
 ###
-http://localhost:8080/books/addrecs
+http://localhost:8080/addrecs
