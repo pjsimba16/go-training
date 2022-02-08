@@ -1,5 +1,5 @@
-//Final Project
-//Patrick Jaime Simba
+// Final Project
+// Patrick Jaime Simba
 
 //package main implements a REST API where multiple users can create, retrieve, update and delete book records from a JSON database. Each users database will be kept intact as long as the web app is running.
 package main
