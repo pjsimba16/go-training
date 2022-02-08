@@ -1,0 +1,43 @@
+INFO: 2022/02/07 17:49:12 main.go:88: New user, patrick signed up.
+INFO: 2022/02/07 17:49:13 main.go:115: User, patrick logged in.
+INFO: 2022/02/07 17:49:16 main.go:245: Book entry posted.
+INFO: 2022/02/07 17:49:22 main.go:158: User, patrick logged out
+INFO: 2022/02/07 17:49:25 main.go:88: New user, user2 signed up.
+INFO: 2022/02/08 08:48:39 main.go:174: Home page accessed.
+INFO: 2022/02/08 08:48:49 main.go:174: Home page accessed.
+INFO: 2022/02/08 08:49:08 main.go:174: Home page accessed.
+INFO: 2022/02/08 08:49:16 main.go:174: Home page accessed.
+INFO: 2022/02/08 08:49:22 main.go:90: New user, patrick signed up.
+ERROR: 2022/02/08 08:49:24 main.go:137: unexpected end of JSON input
+INFO: 2022/02/08 08:49:24 main.go:117: User, patrick logged in.
+INFO: 2022/02/08 08:49:27 main.go:254: Book entry posted.
+INFO: 2022/02/08 08:49:27 main.go:174: Home page accessed.
+INFO: 2022/02/08 08:49:28 main.go:254: Book entry posted.
+INFO: 2022/02/08 08:49:28 main.go:174: Home page accessed.
+INFO: 2022/02/08 08:49:34 main.go:666: Books filtered by rating.
+INFO: 2022/02/08 08:49:37 main.go:636: Books filtered by type.
+INFO: 2022/02/08 08:49:43 main.go:345: Book record deleted.
+INFO: 2022/02/08 08:49:48 main.go:254: Book entry posted.
+INFO: 2022/02/08 08:49:48 main.go:174: Home page accessed.
+INFO: 2022/02/08 08:49:50 main.go:254: Book entry posted.
+INFO: 2022/02/08 08:49:50 main.go:174: Home page accessed.
+INFO: 2022/02/08 08:49:52 main.go:333: Book record updated.
+INFO: 2022/02/08 08:49:56 main.go:164: User, patrick logged out
+INFO: 2022/02/08 08:49:59 main.go:90: New user, user2 signed up.
+ERROR: 2022/02/08 08:50:01 main.go:137: unexpected end of JSON input
+INFO: 2022/02/08 08:50:01 main.go:117: User, user2 logged in.
+INFO: 2022/02/08 08:50:03 main.go:404: New group, bookclub created.
+INFO: 2022/02/08 08:50:09 main.go:254: Book entry posted.
+INFO: 2022/02/08 08:50:09 main.go:174: Home page accessed.
+ERROR: 2022/02/08 08:50:16 main.go:466: unexpected end of JSON input
+INFO: 2022/02/08 08:50:16 main.go:444: Group, bookclub accessed.
+INFO: 2022/02/08 08:50:16 main.go:504: User, user2 added The Lord of the Rings: Fellowship of the Ring to group, groupName
+INFO: 2022/02/08 08:50:23 main.go:254: Book entry posted.
+INFO: 2022/02/08 08:50:23 main.go:174: Home page accessed.
+INFO: 2022/02/08 08:50:26 main.go:444: Group, bookclub accessed.
+INFO: 2022/02/08 08:50:26 main.go:504: User, user2 added The Shadow of Kyoshi to group, groupName
+INFO: 2022/02/08 08:50:28 main.go:424: New member, patrick added to group, bookclub
+INFO: 2022/02/08 08:50:32 main.go:444: Group, bookclub accessed.
+INFO: 2022/02/08 08:50:34 main.go:536: User, user2 recommended The Shadow of Kyoshi to user, patrick
+INFO: 2022/02/08 08:50:38 main.go:164: User, user2 logged out
+INFO: 2022/02/08 08:50:42 main.go:117: User, patrick logged in.
