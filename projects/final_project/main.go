@@ -1,3 +1,6 @@
+//Final Project
+//Patrick Jaime Simba
+
 //package main implements a REST API where multiple users can create, retrieve, update and delete book records from a JSON database. Each users database will be kept intact as long as the web app is running.
 package main
 
@@ -7,6 +10,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"sort"
 	"strconv"
 	"sync"
@@ -43,6 +47,25 @@ type Database struct {
 	filter      []BookRecord
 }
 
+var (
+	WarningLogger *log.Logger
+	InfoLogger    *log.Logger
+	ErrorLogger   *log.Logger
+)
+
+//init initializes logging functions and writes all logs into the file logs.txt
+//custom loggers method pulled from: https://www.honeybadger.io/blog/golang-logging/
+func init() {
+	file, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	InfoLogger = log.New(file, "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
+	WarningLogger = log.New(file, "WARNING: ", log.Ldate|log.Ltime|log.Lshortfile)
+	ErrorLogger = log.New(file, "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
+}
+
 //main initializes the database and calls on the handler function.
 func main() {
 	db := &Database{books: []BookRecord{}}
@@ -54,6 +77,7 @@ func (db *Database) signUp(username string, password string, w http.ResponseWrit
 	for _, user := range db.users {
 		if user.Username == username {
 			fmt.Fprintln(w, "Unable to sign-up. Username is already taken.")
+			WarningLogger.Println("Sign-up failed.")
 			return
 		}
 	}
@@ -64,6 +88,7 @@ func (db *Database) signUp(username string, password string, w http.ResponseWrit
 	fname := username + ".json"
 	_ = ioutil.WriteFile(fname, nil, 0644)
 	fmt.Fprintf(w, "Successfully signed up! \nWelcome %s!\n", username)
+	InfoLogger.Println("New user, " + username + " signed up.")
 }
 
 //login allows users to login using a username and password, accesses associated json file, inputs to database.
@@ -71,6 +96,7 @@ func (db *Database) login(username string, password string, w http.ResponseWrite
 	for _, user := range db.users {
 		if loggedIn {
 			fmt.Fprintln(w, "You are already logged in. Log out to continue.")
+			InfoLogger.Println("Login failed.")
 			return
 		}
 		if user.Username == username && user.Password == password {
@@ -89,10 +115,12 @@ func (db *Database) login(username string, password string, w http.ResponseWrite
 			db.openJson(username, w, r)
 			loggedIn = true
 			db.currentUser = username
+			InfoLogger.Println("User, " + username + " logged in.")
 			return
 		}
 	}
 	fmt.Fprintln(w, "Unable to login. User does not exist in the system. Sign-up to create a new user.")
+	WarningLogger.Println("Login failed.")
 }
 
 //openJson opens the associated json file with the username and rewrites the current database.
@@ -101,35 +129,40 @@ func (db *Database) openJson(username string, w http.ResponseWriter, r *http.Req
 	file, err := ioutil.ReadFile(fname)
 	if err != nil {
 		fmt.Println(err)
+		ErrorLogger.Println(err)
 		return
 	}
 	err = json.Unmarshal(file, &db.books)
 	if err != nil {
 		fmt.Println(err)
+		ErrorLogger.Println(err)
 		return
 	}
-	fmt.Fprintln(w, "Successfully opened file.")
 }
 
 //logout allows a user to logout and save their added/updated/deleted records to their personal database.
 func (db *Database) logout(w http.ResponseWriter, r *http.Request) {
 	if !loggedIn {
 		fmt.Fprintln(w, "Unable to log out. You are not currently logged in.")
+		WarningLogger.Println("Logout failed")
 		return
 	}
 	fname := db.currentUser + ".json"
 	content, err := json.Marshal(db.books)
 	if err != nil {
 		fmt.Println(err)
+		ErrorLogger.Println(err)
 	}
 	err = ioutil.WriteFile(fname, content, 0644)
 	if err != nil {
+		ErrorLogger.Println(err)
 		log.Fatal(err)
 	}
 	loggedIn = false
 	db.books = nil
 	db.nextID = 0
 	fmt.Fprintf(w, "User %s was successfully logged out.\n", db.currentUser)
+	InfoLogger.Println("User, " + db.currentUser + " logged out")
 }
 
 //handler calls on the process and processID functions depending on the contents of the URL.
@@ -139,58 +172,59 @@ func (db *Database) handler() http.HandlerFunc {
 		if r.URL.Path == "/books" {
 			fmt.Fprintf(w, "Welcome to your books database!\nSign up and log in with a username and password to access your personal database.\nHappy reading!\n")
 			db.process(w, r)
+			InfoLogger.Println("Home page accessed.")
 		} else if n, _ := fmt.Sscanf(r.URL.Path, "/books/%d", &id); n == 1 {
 			db.processID(id, w, r)
-		} else if r.URL.Path == "/books/login" {
+		} else if r.URL.Path == "/login" {
 			username := r.URL.Query().Get("username")
 			password := r.URL.Query().Get("password")
 			db.login(username, password, w, r)
-		} else if r.URL.Path == "/books/signup" {
+		} else if r.URL.Path == "/signup" {
 			username := r.URL.Query().Get("username")
 			password := r.URL.Query().Get("password")
 			db.signUp(username, password, w, r)
-		} else if r.URL.Path == "/books/logout" {
+		} else if r.URL.Path == "/logout" {
 			db.logout(w, r)
-		} else if r.URL.Path == "/books/viewall" {
+		} else if r.URL.Path == "/viewall" {
 			db.viewAllBooks(w, r)
-		} else if r.URL.Path == "/books/newgroup" {
+		} else if r.URL.Path == "/newgroup" {
 			groupName := r.URL.Query().Get("groupname")
 			db.newGroup(groupName, w, r)
-		} else if r.URL.Path == "/books/addgroupmember" {
+		} else if r.URL.Path == "/addgroupmember" {
 			groupName := r.URL.Query().Get("groupname")
 			memberName := r.URL.Query().Get("member")
 			var members []string
 			members = append(members, memberName)
 			db.addMembers(members, groupName, w, r)
-		} else if r.URL.Path == "/books/addtogroup" {
+		} else if r.URL.Path == "/addtogroup" {
 			groupName := r.URL.Query().Get("groupname")
 			title := r.URL.Query().Get("title")
 			db.addBookToGroup(title, groupName, w, r)
-		} else if r.URL.Path == "/books/viewgroup" {
+		} else if r.URL.Path == "/viewgroup" {
 			groupName := r.URL.Query().Get("groupname")
 			db.accessGroup(groupName, w, r)
-		} else if r.URL.Path == "/books/recommend" {
+		} else if r.URL.Path == "/recommend" {
 			username := r.URL.Query().Get("username")
 			bookname := r.URL.Query().Get("bookname")
 			db.recommend(username, bookname, w, r)
-		} else if r.URL.Path == "/books/checkrecs" {
+		} else if r.URL.Path == "/checkrecs" {
 			username := r.URL.Query().Get("username")
 			db.checkRecs(username, w, r)
-		} else if r.URL.Path == "/books/addrecs" {
+		} else if r.URL.Path == "/addrecs" {
 			db.addRecs(w, r)
-		} else if r.URL.Path == "/books/filterbyauthor" {
+		} else if r.URL.Path == "/filterbyauthor" {
 			value := r.URL.Query().Get("author")
 			db.filterByAuthor(value, w, r)
-		} else if r.URL.Path == "/books/filterbybooktype" {
+		} else if r.URL.Path == "/filterbybooktype" {
 			value := r.URL.Query().Get("booktype")
 			db.filterByBookType(value, w, r)
-		} else if r.URL.Path == "/books/filterbygenre" {
+		} else if r.URL.Path == "/filterbygenre" {
 			value := r.URL.Query().Get("genre")
 			db.filterByGenre(value, w, r)
-		} else if r.URL.Path == "/books/filterbyrating" {
+		} else if r.URL.Path == "/filterbyrating" {
 			value := r.URL.Query().Get("rating")
 			db.filterByRating(value, w, r)
-		} else if r.URL.Path == "/books/filterbystatus" {
+		} else if r.URL.Path == "/filterbystatus" {
 			value := r.URL.Query().Get("status")
 			db.filterByStatus(value, w, r)
 		}
@@ -204,10 +238,12 @@ func (db *Database) process(w http.ResponseWriter, r *http.Request) {
 		var cont BookRecord
 		if err := json.NewDecoder(r.Body).Decode(&cont); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			ErrorLogger.Println(err)
 			return
 		} else if ok, contExist := checkPresence(cont, db.books); ok {
 			fmt.Fprintln(w, "409 (Conflict): Book is already in books database.")
 			fmt.Fprintln(w, contExist)
+			WarningLogger.Println("Invalid post request")
 			return
 		}
 		db.mu.Lock()
@@ -216,19 +252,23 @@ func (db *Database) process(w http.ResponseWriter, r *http.Request) {
 		db.books = append(db.books, cont)
 		db.mu.Unlock()
 		w.Header().Set("Content-Type", "application/json")
+		InfoLogger.Println("Book entry posted.")
 		fmt.Fprintln(w, "{\"success\": true}")
 	case "GET":
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(db.books); err != nil {
 			fmt.Fprintln(w, "200 (OK)")
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			InfoLogger.Println("Book entries retrieved.")
 			return
 		}
 	case "PUT":
 		fmt.Fprintln(w, "405 (Not Allowed)")
+		WarningLogger.Println("Invalid put request")
 		return
 	case "DELETE":
 		fmt.Fprintln(w, "405 (Not Allowed)")
+		WarningLogger.Println("Invalid delete request")
 		return
 	}
 }
@@ -240,11 +280,13 @@ func (db *Database) processID(id int, w http.ResponseWriter, r *http.Request) {
 		for _, contact := range db.books {
 			if id == contact.ID {
 				fmt.Fprintln(w, "200 (OK): Book record retrieved.")
+				InfoLogger.Println("Book record retrieved.")
 				fmt.Fprintln(w, contact)
 				return
 			}
 		}
 		fmt.Fprintln(w, "404 (Not Found): Book record not found.")
+		WarningLogger.Println("Invalid get request")
 		return
 	case "PUT":
 		ID := r.URL.Query().Get("id")
@@ -289,23 +331,28 @@ func (db *Database) processID(id int, w http.ResponseWriter, r *http.Request) {
 					db.books[key].ID = ID
 				}
 				fmt.Fprintln(w, "200 (OK): Book record updated.")
+				InfoLogger.Println("Book record updated.")
 				return
 			}
 		}
 		fmt.Fprintln(w, "404 (Not Found): Book record not found.")
+		WarningLogger.Println("Invalid put request")
 		return
 	case "DELETE":
 		for key, book := range db.books {
 			if id == book.ID {
 				db.books = append(db.books[:key], db.books[key+1:]...)
 				fmt.Fprintln(w, "200 (OK): Book record deleted.")
+				InfoLogger.Println("Book record deleted.")
 				return
 			}
 		}
 		fmt.Fprintln(w, "404 (Not Found): Book record not found.")
+		WarningLogger.Println("Invalid delete request")
 		return
 	case "POST":
 		fmt.Fprintln(w, "405 (Not Allowed)")
+		WarningLogger.Println("Invalid post request")
 		return
 	}
 }
@@ -355,6 +402,7 @@ func (db *Database) newGroup(groupName string, w http.ResponseWriter, r *http.Re
 	fname := groupName + "bookclub.json"
 	_ = ioutil.WriteFile(fname, nil, 0644)
 	fmt.Fprintln(w, "Successfully created new group!")
+	InfoLogger.Println("New group, " + groupName + " created.")
 }
 
 //addMembers takes in a slice of member names and a group name to give members access to an existing group which the current user created
@@ -374,6 +422,7 @@ func (db *Database) addMembers(memberNames []string, groupName string, w http.Re
 				}
 			}
 			fmt.Fprintln(w, "Successfully added new members to your group!")
+			InfoLogger.Println("New member, " + memberNames[0] + " added to group, " + groupName)
 			return
 		}
 	}
@@ -393,6 +442,7 @@ func (db *Database) accessGroup(groupName string, w http.ResponseWriter, r *http
 					fmt.Fprintf(w, "You have successfully accessed %s group!\n", groupName)
 					db.openGroupJson(groupName, w, r)
 					showGroupBooks(db.groupBooks, w, r)
+					InfoLogger.Println("Group, " + groupName + " accessed.")
 					return
 				}
 			}
@@ -408,11 +458,13 @@ func (db *Database) openGroupJson(groupName string, w http.ResponseWriter, r *ht
 	file, err := ioutil.ReadFile(fname)
 	if err != nil {
 		fmt.Println(err)
+		ErrorLogger.Println(err)
 		return
 	}
 	err = json.Unmarshal(file, &db.groupBooks)
 	if err != nil {
 		fmt.Println(err)
+		ErrorLogger.Println(err)
 		return
 	}
 	fmt.Fprintln(w, "Successfully opened file.")
@@ -431,9 +483,11 @@ func (db *Database) closeGroupJson(groupName string, w http.ResponseWriter, r *h
 	content, err := json.Marshal(db.groupBooks)
 	if err != nil {
 		fmt.Println(err)
+		ErrorLogger.Println(err)
 	}
 	err = ioutil.WriteFile(fname, content, 0644)
 	if err != nil {
+		ErrorLogger.Println(err)
 		log.Fatal(err)
 	}
 }
@@ -448,6 +502,7 @@ func (db *Database) addBookToGroup(bookTitle, groupName string, w http.ResponseW
 					db.groupBooks = append(db.groupBooks, book)
 					fmt.Fprintf(w, "Successfully added %s to your group\n", bookTitle)
 					db.closeGroupJson(groupName, w, r)
+					InfoLogger.Println("User, " + db.currentUser + " added " + bookTitle + " to group, " + "groupName")
 					return
 				}
 			}
@@ -479,6 +534,7 @@ func (db *Database) recommend(username, bookName string, w http.ResponseWriter, 
 						db.users[key].Notifications = append(db.users[key].Notifications, "A new book: "+bookName+" was recommended to you by "+db.currentUser)
 					}
 				}
+				InfoLogger.Println("User, " + db.currentUser + " recommended " + bookName + " to user, " + username)
 				return
 			}
 		}
@@ -563,6 +619,7 @@ func (db *Database) filterByAuthor(value string, w http.ResponseWriter, r *http.
 	for _, b := range db.filter {
 		fmt.Fprintln(w, b)
 	}
+	InfoLogger.Println("Books filtered by author.")
 }
 
 //filterByBookType finds and prints all book entries with given book type in alphabetical order of book titles
@@ -577,6 +634,7 @@ func (db *Database) filterByBookType(value string, w http.ResponseWriter, r *htt
 	for _, b := range db.filter {
 		fmt.Fprintln(w, b)
 	}
+	InfoLogger.Println("Books filtered by type.")
 }
 
 //filterByGenre finds and prints all book entries with given genre in alphabetical order of book titles
@@ -591,6 +649,7 @@ func (db *Database) filterByGenre(value string, w http.ResponseWriter, r *http.R
 	for _, b := range db.filter {
 		fmt.Fprintln(w, b)
 	}
+	InfoLogger.Println("Books filtered by genre.")
 }
 
 //filterByRating finds and prints all book entries with given rating in alphabetical order of book titles
@@ -605,6 +664,7 @@ func (db *Database) filterByRating(value string, w http.ResponseWriter, r *http.
 	for _, b := range db.filter {
 		fmt.Fprintln(w, b)
 	}
+	InfoLogger.Println("Books filtered by rating.")
 }
 
 //filterByStatus finds and prints all book entries with given status in alphabetical order of book titles
@@ -619,6 +679,7 @@ func (db *Database) filterByStatus(value string, w http.ResponseWriter, r *http.
 	for _, b := range db.filter {
 		fmt.Fprintln(w, b)
 	}
+	InfoLogger.Println("Books filtered by status.")
 }
 
 //alphabetize orders book entries in ascending alphabetical order
