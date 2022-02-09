@@ -1,0 +1,33 @@
+INFO: 2022/02/09 14:45:11 main.go:174: Home page accessed.
+INFO: 2022/02/09 14:46:26 main.go:90: New user,  signed up.
+WARNING: 2022/02/09 14:52:05 main.go:79: Sign-up failed.
+INFO: 2022/02/09 14:57:13 main.go:90: New user, pat signed up.
+INFO: 2022/02/09 15:02:55 main.go:90: New user, patrick signed up.
+INFO: 2022/02/09 15:04:43 main.go:90: New user, h signed up.
+WARNING: 2022/02/09 15:11:34 main.go:79: Sign-up failed.
+WARNING: 2022/02/09 15:13:15 main.go:79: Sign-up failed.
+WARNING: 2022/02/09 15:19:26 main.go:79: Sign-up failed.
+WARNING: 2022/02/09 15:19:29 main.go:79: Sign-up failed.
+WARNING: 2022/02/09 15:21:23 main.go:79: Sign-up failed.
+WARNING: 2022/02/09 16:13:46 main.go:79: Sign-up failed.
+INFO: 2022/02/09 16:13:57 main.go:90: New user, newuser1 signed up.
+INFO: 2022/02/09 16:16:20 main.go:254: Book entry posted.
+INFO: 2022/02/09 16:16:20 main.go:174: Home page accessed.
+INFO: 2022/02/09 16:16:46 main.go:174: Home page accessed.
+ERROR: 2022/02/09 16:21:59 main.go:137: unexpected end of JSON input
+INFO: 2022/02/09 16:21:59 main.go:117: User, patrick logged in.
+WARNING: 2022/02/09 16:22:24 main.go:245: Invalid post request
+INFO: 2022/02/09 16:22:24 main.go:174: Home page accessed.
+WARNING: 2022/02/09 16:23:29 main.go:245: Invalid post request
+INFO: 2022/02/09 16:23:29 main.go:174: Home page accessed.
+WARNING: 2022/02/09 16:25:24 main.go:245: Invalid post request
+INFO: 2022/02/09 16:25:24 main.go:174: Home page accessed.
+WARNING: 2022/02/09 16:26:04 main.go:245: Invalid post request
+INFO: 2022/02/09 16:26:04 main.go:174: Home page accessed.
+INFO: 2022/02/09 16:29:14 main.go:254: Book entry posted.
+INFO: 2022/02/09 16:29:14 main.go:174: Home page accessed.
+INFO: 2022/02/09 16:29:58 main.go:98: Login failed.
+INFO: 2022/02/09 16:30:26 main.go:254: Book entry posted.
+INFO: 2022/02/09 16:30:26 main.go:174: Home page accessed.
+INFO: 2022/02/09 16:30:34 main.go:174: Home page accessed.
+INFO: 2022/02/09 16:30:59 main.go:404: New group, bookboyu created.
