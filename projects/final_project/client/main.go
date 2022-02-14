@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -58,6 +59,8 @@ func main() {
 		addtogroup()
 	case "viewgroup":
 		viewgroup()
+	case "addgroupmember":
+		addgroupmember()
 	case "recommend":
 		recommend()
 	case "checkrecs":
@@ -163,13 +166,13 @@ func createPost() BookRecord {
 		bookSlice = append(bookSlice, input)
 	}
 	var rec BookRecord
-	rec.Title = bookSlice[0]
-	rec.Author = bookSlice[1]
-	rec.BookType = bookSlice[2]
-	rec.Genre = bookSlice[3]
-	rec.Rating = bookSlice[4]
-	rec.Status = bookSlice[5]
-	rec.Notes = bookSlice[6]
+	rec.Title = strings.Replace(bookSlice[0], "\r\n", "", -1)
+	rec.Author = strings.Replace(bookSlice[1], "\r\n", "", -1)
+	rec.BookType = strings.Replace(bookSlice[2], "\r\n", "", -1)
+	rec.Genre = strings.Replace(bookSlice[3], "\r\n", "", -1)
+	rec.Rating = strings.Replace(bookSlice[4], "\r\n", "", -1)
+	rec.Status = strings.Replace(bookSlice[5], "\r\n", "", -1)
+	rec.Notes = strings.Replace(bookSlice[6], "\r\n", "", -1)
 	return rec
 }
 
@@ -280,6 +283,26 @@ func addtogroup() {
 	fmt.Scan(&title)
 	c := http.Client{Timeout: time.Duration(1) * time.Second}
 	resp, err := c.Get(baseURL + "addtogroup?groupname=" + groupname + "&title=" + title)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(string(body))
+}
+
+//addgroupmember adds another existing user to your book club
+func addgroupmember() {
+	var member, groupname string
+	fmt.Println("Enter group name: ")
+	fmt.Scan(&groupname)
+	fmt.Println("Enter username to add to your group: ")
+	fmt.Scan(&member)
+	c := http.Client{Timeout: time.Duration(1) * time.Second}
+	resp, err := c.Get(baseURL + "addgroupmember?groupname=" + groupname + "&member=" + member)
 	if err != nil {
 		log.Fatal(err)
 	}
