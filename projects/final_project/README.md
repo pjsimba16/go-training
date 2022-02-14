@@ -14,9 +14,26 @@ The webapp implements a REST API for a database of book records. All of the data
 
 This webapp can be used to store book records for books that you've read, want to read or are currently reading. While the webapp is running, multiple users can sign up to create their own databases and log in or log out to access or or close their databases. The webapp contains features to create, retrieve, update or delete book entries in each users own databases. Moreover, you can view the current book records as a whole or with filters. Additionally, the webapp has functions that allows users to recommend books from their own databases to other signed up users, which those users can add into their own databases. Similarly, users can create groups with other existing accounts in which they can share book entries within a single database.
 
-Webapp also deployed and ran using Docker.
+Webapp is deployed and ran using Docker and includes a command line interface.
 
-*REQUIREMENTS*
+# FILES
+
+server
+
+  Dockerfile
+  go.mod
+  logs.txt - sample logs 
+  main.go - source code for webapp server
+  server_demo.mkv - demo video for webapp server
+  test.rest - testing scripts
+  
+ client
+ 
+  client_demo.mkv - demo video for client side CLI
+  main.exe - source code executable
+  main.go - source code for CLI
+
+# REQUIREMENTS
 
 1. http API
 2. http client (webapp or CLI)
