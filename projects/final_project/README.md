@@ -18,13 +18,13 @@ Webapp is deployed and ran using Docker and includes a command line interface.
 
 # FILES
 
-server
-
-  Dockerfile
-  go.mod
-  logs.txt - sample logs 
-  main.go - source code for webapp server
-  server_demo.mkv - demo video for webapp server
+server\n
+\n
+  Dockerfile\n
+  go.mod\n
+  logs.txt - sample logs \n
+  main.go - source code for webapp server\n
+  server_demo.mkv - demo video for webapp server\n
   test.rest - testing scripts
   
  client
